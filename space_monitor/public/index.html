@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Moody Mirror</title>
+	<style type="text/css">
+		
+	</style>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+</head>
+<body>
+	<h1>My Tingo Chart</h1>
+ 
+	<div style="width: 50%">
+	<canvas id="something" height="450" width="600"></canvas>
+	</div>
+
+	<script>
+
+	window.onload = function(){
+	initLineChart();
+	}
+
+	var socket = io();
+
+	var lineChartData = {
+	//labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
+	labels: Array(100).fill(0),
+	datasets: [
+	{
+	label: "My First dataset",
+	fillColor: "rgba(220,220,220,0.2)",
+	strokeColor: "rgba(220,220,220,1)",
+	pointColor: "rgba(220,220,220,1)",
+	pointStrokeColor: "#fff",
+	pointHighlightFill: "#fff",
+	pointHighlightStroke: "rgba(220,220,220,1)",
+	//data: [65, 59, 80, 81, 56, 55, 40, 50, 40, 30]
+	data: Array(100).fill(0)
+	}
+	]
+	}
+
+	socket.on('latestSamples', function(incomingData) {
+	console.log(incomingData);
+	socket.emit('messageFromClientToServer', "received: "+incomingData);
+
+	lineChartData.datasets[0].data = incomingData;
+	//window.myLineChart.update();
+	initLineChart();
+	});
+
+	var initLineChart = function() {
+
+	var options = {
+	animation : false,
+	responsive : true
+	};
+
+	var canvas = document.getElementById("something");
+	var ctx = canvas.getContext("2d");
+	window.myLineChart = new Chart(ctx).Line(lineChartData, options );
+	}
+	</script>
+
+</body>
+</html>
