@@ -2,9 +2,7 @@
 <html>
 <head>
 	<title>Moody Mirror</title>
-	<style type="text/css">
-		
-	</style>
+	<link rel="stylesheet" type="text/css" href="/css/main.css">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
 </head>
@@ -42,12 +40,12 @@
 	}
 
 	socket.on('latestSamples', function(incomingData) {
-	console.log(incomingData);
-	socket.emit('messageFromClientToServer', "received: "+incomingData);
+		console.log(incomingData);
+		socket.emit('messageFromClientToServer', "received: "+incomingData);
 
-	lineChartData.datasets[0].data = incomingData;
-	//window.myLineChart.update();
-	initLineChart();
+		lineChartData.datasets[0].data = incomingData;
+		//window.myLineChart.update();
+		initLineChart();
 	});
 
 	var initLineChart = function() {
@@ -62,6 +60,9 @@
 	window.myLineChart = new Chart(ctx).Line(lineChartData, options );
 	}
 	</script>
-
+	 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
+    <!-- Include all compiled plugins (below), or include individual files as needed -->
+    <script src="js/bootstrap.min.js"></script>
 </body>
 </html>
