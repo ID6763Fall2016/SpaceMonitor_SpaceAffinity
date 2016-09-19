@@ -3,27 +3,85 @@
 <head>
 	<title>Moody Mirror</title>
 	<link rel="stylesheet" type="text/css" href="/css/main.css">
+	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500" rel="stylesheet">
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
-	<h1>My Tingo Chart</h1>
- 
-	<div style="width: 50%">
-	<canvas id="something" height="450" width="600"></canvas>
+	<div class="main-container">
+		<div class="row">
+			<aside class="dashboard col-md-4">
+				<h1 class="title">Clough Commons</h1>
+				<div class="now">
+					<p id="time" class="time">11:58</p>
+					<p id="date" class="date">Thuesday, Sep 15, 2016</p>
+				</div>
+				<div class="data">
+					<div class="today data-section">
+						<h2 class="subheader">
+							Today
+						</h2>
+						<div class="row">
+							<div class="stats-item col-md-12 col-xs-12">
+								<h6 class="item-title">% of people feel happy</h6>
+								<p id="mood-value" class="value value-large">80%</p>
+							</div>
+							
+						</div>
+						<div class="row">
+							<div class="stats-item col-md-6 col-xs-12">
+								<h6 class="item-title">Total people visited</h6>
+								<p id="total-mood-entry" class="value">206</p>
+							</div>
+							<div class="stats-item col-md-6 col-xs-12">
+								<h6 class="item-title">This place is</h6>
+								<p id="motion-value" class="value">Busy</p>
+							</div>
+						</div>
+					</div>
+					<div class="weekly data-section">
+						<h2 class="subheader">
+							Weekly
+						</h2>
+						<div class="row">
+							<div class="stats-item col-md-6 col-xs-12">
+								<h6 class="item-title">Most people feel happy on</h6>
+								<p class="value">Friday</p>
+							</div>
+							<div class="stats-item col-md-6 col-xs-12">
+								<h6 class="item-title">Most people are busy on</h6>
+								<p class="value">Monday</p>
+							</div>
+						</div>
+						<div class="row">
+							<div class="stats-item col-md-12 col-xs-12">
+								<h6 class="item-title">Happiness over weekdays</h6>
+								<canvas id="something" height="450" width="600"></canvas>
+							</div>
+						</div>
+					</div>
+				</div>
+			</aside>
+			<div class="mirror col-md-8">
+				<h1 class="question">How do you feel today?<br><span>Click the button describes your mood the best.</span><br><span class="glyphicon glyphicon-chevron-down"></span></h1>
+				<p class="quote fadeout">"It isn’t what you have, or who you are, or where you are, or what you are doing that makes you happy or unhappy. It is what you think about."</p>
+			</div>
+		</div>
 	</div>
+	
 
 	<script>
 
 	window.onload = function(){
 	initLineChart();
+	startTime();
 	}
 
 	var socket = io();
 
 	var lineChartData = {
-	//labels: ["1", "2", "3", "4", "5", "6", "7", "8", "9", "10"],
-	labels: Array(100).fill(0),
+	labels: ["M", "T", "W", "T", "F"],
+	// labels: Array(100).fill(0),
 	datasets: [
 	{
 	label: "My First dataset",
@@ -34,7 +92,7 @@
 	pointHighlightFill: "#fff",
 	pointHighlightStroke: "rgba(220,220,220,1)",
 	//data: [65, 59, 80, 81, 56, 55, 40, 50, 40, 30]
-	data: Array(100).fill(0)
+	// data: Array(100).fill(0)
 	}
 	]
 	}
@@ -48,10 +106,83 @@
 		initLineChart();
 	});
 
+	// Clock
+	function startTime() {
+	    var today = new Date();
+	    var day = today.getDay();
+	    var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
+	    var year = today.getFullYear();
+	    var month = today.getMonth();
+	    var months = ["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+	    var date = today.getDate();
+	    var h = today.getHours();
+	    var m = today.getMinutes();
+	    var s = today.getSeconds();
+	    m = checkTime(m);
+	    s = checkTime(s);
+	    $("#time").text(h + ":" + m);
+	    $("#date").text(days[day]+ ", "+ months[month] + " " + date + ", " + year);
+	    var t = setTimeout(startTime, 500);
+	}
+	function checkTime(i) {
+	    if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
+	    return i;
+	}
+
+
+	// Motion data 
+	var motionStatus = "Quiet";
+	socket.on('latestMotion', function(motionData) {
+		console.log(motionData);
+		motionStatus = motionData;
+		updateMotion();
+	});
+
+	var updateMotion = function() {
+		$("#motion-value").text(motionStatus);
+	}
+
+	// Mood data 
+	var moodValue = "...";
+	var totalMoodEntry = 0;
+	socket.on('todayMood', function(moodData) {
+		console.log(moodData);
+		totalMoodEntry = moodData[0];
+		moodValue = moodData[1];
+		updateMood();
+	});
+
+	var updateMood = function() {
+		$("#mood-value").text(moodValue);
+		$("#total-mood-entry").text(totalMoodEntry);
+	}
+
+
+	// Quote update
+	socket.on('newEntry', function(newMood) {
+		console.log(newMood);
+		showQuote(newMood);
+	});
+	var showQuote = function(mood) {
+		if (mood === 1) {
+			$(".quote").text("\"It isn’t what you have, or who you are, or where you are, or what you are doing that makes you happy or unhappy. It is what you think about.\"");
+			
+		} else {
+			$(".quote").text("\"After every storm the sun will smile; for every problem there is a solution, and the soul's indefeasible duty is to be of good cheer.\"");
+		}
+		$('.question').addClass("fadeout");
+		$(".quote").removeClass("fadeout");
+		setTimeout(hideQuote, 5000);
+	}
+
+	var hideQuote = function() {
+		$('.question').removeClass("fadeout");
+		$(".quote").addClass("fadeout");
+	}
 	var initLineChart = function() {
 
 	var options = {
-	animation : false,
+	animation : true,
 	responsive : true
 	};
 

@@ -3,3 +3,143 @@
 
 @import "bootstrap-custom";
 @import "bootstrap/theme";
+
+// Variables
+$dashboard-bg: #29282E;
+$mirror-blue: #5CB4E5;
+$mirror-green: #64BC49;
+
+$dashboard-width: 480px;
+
+* {
+	box-sizing: border-box;
+}
+html {
+	font-size: 1em;
+	font-size: 1.8vw;
+}
+body {
+	width: 100%;
+}
+p {
+	margin: 0;
+}
+
+/*
+ * Dashboard
+ */
+.dashboard {
+	position: relative;
+	max-width: $dashboard-width;
+	height: 100vh;
+
+	padding: 3em;
+
+	background-color: $dashboard-bg;
+}
+
+.title {
+	padding-bottom: 24px;
+
+	font-size: 5.12em;
+	text-transform: uppercase;
+
+	border-bottom: 1px solid $gray-light;
+}
+
+.now {
+	margin-top: 32px;
+
+	.time {
+		font-size: 4.5em;
+		font-weight: 100;
+	}
+
+	.date {
+		font-size: 1em;
+		font-weight: 300;
+	}
+}
+
+.data {
+	position: absolute;
+	width: calc(100% - 6em);
+	bottom: 3em;
+}
+
+.data-section {
+	margin-top: 4em;
+}
+
+.subheader {
+	padding-bottom: 12px;
+
+	font-size: 1em;
+	text-transform: uppercase;
+
+	color: $mirror-blue;
+
+	border-bottom: 1px solid $mirror-blue;
+}
+
+.stats-item {
+	margin-top: 1em;
+	.item-title {
+		font-size: 1em;
+		color: $gray-light;
+	}
+	.value {
+		font-size: 3em;
+		font-weight: 300;
+	}
+	.value-large {
+		font-size: 4.5em;
+		color: $mirror-green;
+	}
+}
+
+/*
+ * Mirror
+ */
+.mirror {
+	position: relative;
+	height: 100vh;
+}
+.question {
+	position: absolute;
+	width: 100%;
+	bottom: 3em;
+
+	text-align: center;
+
+	transition: all 0.3s ease-in-out;
+
+	&.fadeout {
+		opacity: 0;
+		bottom: 1em;
+	}
+
+	span {
+		font-size: 18px;
+		font-weight: 300;
+		color: $gray-light;
+	}
+}
+.quote {
+	position: absolute;
+	width: 60%;
+	left: 20%;
+	bottom: 12em;
+
+	font-size: 2em;
+	font-weight: 300;
+	font-style: italic;
+	text-align: center;
+
+	transition: all 0.5s ease-in-out;
+
+	&.fadeout {
+		opacity: 0;
+		transform: scale(1.2);
+	}
+}
