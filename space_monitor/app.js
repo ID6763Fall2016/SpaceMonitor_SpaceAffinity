@@ -63,6 +63,9 @@ io.on('connection', function(socket) {
 		getTodayMood(1000, function(results) {
 			if (results) {
 				var totalEntries = results.length;
+				console.log("===== prevTotal =====");
+				console.log(prevTotal + "; "+ totalEntries);
+				console.log("=========================");
 				if (prevTotal != totalEntries) {
 					currentMood = results[0].mood;
 					socket.emit('newEntry', currentMood);
@@ -89,6 +92,10 @@ io.on('connection', function(socket) {
 			}
 			
 		});
+	}, 1000);
+
+	var sendHappyDay = setInterval(function() {
+
 	}, 1000);
 
 	socket.on('disconnect', function(){
@@ -191,8 +198,10 @@ var getTodayMood = function(theCount, callback) {
 	moodCollection
 	.find({
 		"datetime" : {
+			// TODO 
+			// auto fetch today's date
 			'$gte': new Date("2016-09-18T00:00:00.000Z"),
-			'$lte': new Date("2016-09-19T07:00:00.000Z")
+			'$lte': new Date("2016-09-20T07:00:00.000Z")
 		}
 	})
 	.sort({"datetime":-1})
@@ -202,3 +211,14 @@ var getTodayMood = function(theCount, callback) {
 	});
 };
 
+var getHappyDay = function(theCount, callback) {
+	var moodCollection = db.collection('mood_data');
+	moodCollection
+	.find({
+		"mood" : 1
+	})
+	.limit(theCount)
+	.toArray(function(err,docList){
+		callback(docList);
+	});
+}

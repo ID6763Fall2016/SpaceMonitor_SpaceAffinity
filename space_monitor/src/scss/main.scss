@@ -41,7 +41,7 @@ p {
 .title {
 	padding-bottom: 24px;
 
-	font-size: 5.12em;
+	font-size: 5em;
 	text-transform: uppercase;
 
 	border-bottom: 1px solid $gray-light;
@@ -51,7 +51,7 @@ p {
 	margin-top: 32px;
 
 	.time {
-		font-size: 4.5em;
+		font-size: 4em;
 		font-weight: 100;
 	}
 
@@ -83,13 +83,14 @@ p {
 }
 
 .stats-item {
-	margin-top: 1em;
+	margin-top: 0.4em;
 	.item-title {
+		margin-bottom: 0;
 		font-size: 1em;
 		color: $gray-light;
 	}
 	.value {
-		font-size: 3em;
+		font-size: 2.4em;
 		font-weight: 300;
 	}
 	.value-large {

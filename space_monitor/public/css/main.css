@@ -6297,14 +6297,14 @@ p {
 
 .title {
   padding-bottom: 24px;
-  font-size: 5.12em;
+  font-size: 5em;
   text-transform: uppercase;
   border-bottom: 1px solid #777777; }
 
 .now {
   margin-top: 32px; }
   .now .time {
-    font-size: 4.5em;
+    font-size: 4em;
     font-weight: 100; }
   .now .date {
     font-size: 1em;
@@ -6326,12 +6326,13 @@ p {
   border-bottom: 1px solid #5CB4E5; }
 
 .stats-item {
-  margin-top: 1em; }
+  margin-top: 0.4em; }
   .stats-item .item-title {
+    margin-bottom: 0;
     font-size: 1em;
     color: #777777; }
   .stats-item .value {
-    font-size: 3em;
+    font-size: 2.4em;
     font-weight: 300; }
   .stats-item .value-large {
     font-size: 4.5em;
