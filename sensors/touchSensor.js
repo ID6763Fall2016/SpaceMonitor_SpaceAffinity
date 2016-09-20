@@ -1,50 +1,45 @@
-// const MPR121 = require('adafruit-mpr121'),
-//       mpr121  = new MPR121(0x29, 1);
+'use strict';
 
-// // listen for touch events
-// mpr121.on('touch', (pin) => console.log(`pin ${pin} touched`));
-
-// // listen for release events
-// mpr121.on('release', (pin) => console.log(`pin ${pin} released`));
-
-// // listen for changes to the state of a specific pin
-// mpr121.on(3, (state) => console.log(`pin 3 is ${state ? 'touched' : 'released'}`));
-
-// // check the current state of a specific pin synchronously
-// const state = mpr121.isTouched(2);
-// console.log(`pin 2 is ${state ? 'touched' : 'released'}`);
-
-// var raspi = require('raspi');
-// var I2C = require('raspi-i2c').I2C;
- 
-// raspi.init(function() {
-//   var i2c = new I2C();
-//   // Read one byte from the device at address 18
-
-//   setInterval(function() {
-//   	console.log(i2c.readByteSync(0x29)); 
-//   }, 2000);
-// });
-
-
-var i2c = require('i2c-bus'),
+// When run, this program will output the same information as the
+// command 'i2cdetect -y -r 1'
+var fs = require('fs'),
+  i2c = require('../'),
   i2c1 = i2c.openSync(1);
- 
-var DS1621_ADDR = 0x29,
-	CMD_ACCESS_CONFIG = 0xac,
-	CMD_READ_TEMP = 0xaa,
-	CMD_START_CONVERT = 0xee;
 
+var EIO = 5,       /* I/O error */
+  EBUSY = 16,      /* Device or resource busy */
+  EREMOTEIO = 121; /* Remote I/O error */
 
-(function () {
-  var rawTemp;
- 
-  // Enter one shot mode (this is a non volatile setting) 
-  // i2c1.writeByteSync(DS1621_ADDR, CMD_ACCESS_CONFIG, 0x01);
- 	var v = i2c1.readByteSync(DS1621_ADDR, CMD_ACCESS_CONFIG);
- 	console.log(v);
- 
-  i2c1.closeSync();
-}());
+function scan(first, last) {
+  var addr;
 
+  fs.writeSync(0, '     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f');
 
+  for (addr = 0; addr <= 127; addr += 1) {
+    if (addr % 16 === 0) {
+      fs.writeSync(0, '\n' + (addr === 0 ? '0' : ''));
+      fs.writeSync(0, addr.toString(16) + ':');
+    }
+
+    if (addr < first || addr > last) {
+      fs.writeSync(0, '   ');
+    } else {
+      try {
+        i2c1.receiveByteSync(addr);
+        fs.writeSync(0, ' ' + addr.toString(16)); // device found, print addr
+      } catch (e) {
+        if (e.errno === EREMOTEIO || e.errno === EIO) {
+          fs.writeSync(0, ' --');
+        } else if (e.errno === EBUSY) {
+          fs.writeSync(0, ' UU');
+        } else {
+          throw e; // Oops, don't know what to do!
+        }
+      }
+    }
+  }
+
+  fs.writeSync(0, '\n');
+}
+
+scan(0x3, 0x77);
