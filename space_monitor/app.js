@@ -1,3 +1,7 @@
+// Sensors 
+var GPIO = require('onoff').Gpio,
+	motion_sensor = new GPIO(18, 'in', 'both');
+
 var express = require('express');
 var app = express();
 var http = require('http').createServer(app);
@@ -153,7 +157,7 @@ var insertMood = function(theDate, theMood, theDay)
 var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 setInterval(function(){
  var makeValue = Math.random() * 100;
- var motionValue = Math.round(Math.random());
+ var motionValue = motion_sensor.readSync();
  var getDate = new Date();
  var day = getDate.getDay();
  var getDay = days[day];
