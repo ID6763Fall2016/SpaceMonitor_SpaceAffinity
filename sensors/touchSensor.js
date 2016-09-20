@@ -49,9 +49,9 @@ var DS1621_ADDR = 0x29,
   // Start temperature conversion 
   i2c1.sendByteSync(DS1621_ADDR, CMD_START_CONVERT);
  
-  // Wait for temperature conversion to complete 
-  while ((i2c1.readByteSync(DS1621_ADDR, CMD_ACCESS_CONFIG) & 0x80) === 0) {
-  }
+  // // Wait for temperature conversion to complete 
+  // while ((i2c1.readByteSync(DS1621_ADDR, CMD_ACCESS_CONFIG) & 0x80) === 0) {
+  // }
  
   // Display temperature 
   rawTemp = i2c1.readWordSync(DS1621_ADDR, CMD_READ_TEMP);
