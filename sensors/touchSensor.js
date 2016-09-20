@@ -54,8 +54,8 @@ var DS1621_ADDR = 0x29,
   // }
  
   // Display temperature 
-  rawTemp = i2c1.readWordSync(DS1621_ADDR, CMD_READ_TEMP);
-  console.log('temp: ' + rawTemp);
+  // rawTemp = i2c1.readWordSync(DS1621_ADDR, CMD_READ_TEMP);
+  // console.log('temp: ' + rawTemp);
  
   i2c1.closeSync();
 }());
