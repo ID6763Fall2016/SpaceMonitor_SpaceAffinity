@@ -164,7 +164,7 @@ setInterval(function(){
 
  insertSample(makeValue,getDate);
  insertMotion(getDate,motionValue,getDay);
-},1000);
+},200);
 
 setInterval(function() {
 	var moodValue = Math.round(Math.random());
