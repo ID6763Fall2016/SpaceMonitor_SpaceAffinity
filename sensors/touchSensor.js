@@ -4,42 +4,69 @@
 // command 'i2cdetect -y -r 1'
 var fs = require('fs'),
   i2c = require('i2c-bus'),
-  i2c1 = i2c.openSync(1);
+  i2c1;
+ var async = require('async');
 
-var EIO = 5,       /* I/O error */
-  EBUSY = 16,      /* Device or resource busy */
-  EREMOTEIO = 121; /* Remote I/O error */
+var DS1621_ADDR = 0x48,
+  CMD_ACCESS_CONFIG = 0xac,
+  CMD_READ_TEMP = 0xaa,
+  CMD_START_CONVERT = 0xee;
 
-function scan(first, last) {
-  var addr;
+function toCelsius(rawTemp) {
+  var halfDegrees = ((rawTemp & 0xff) << 1) + (rawTemp >> 15);
 
-  fs.writeSync(0, '     0  1  2  3  4  5  6  7  8  9  a  b  c  d  e  f');
-
-  for (addr = 0; addr <= 127; addr += 1) {
-    if (addr % 16 === 0) {
-      fs.writeSync(0, '\n' + (addr === 0 ? '0' : ''));
-      fs.writeSync(0, addr.toString(16) + ':');
-    }
-
-    if (addr < first || addr > last) {
-      fs.writeSync(0, '   ');
-    } else {
-      try {
-        i2c1.receiveByteSync(addr);
-        fs.writeSync(0, ' ' + addr.toString(16)); // device found, print addr
-      } catch (e) {
-        if (e.errno === EREMOTEIO || e.errno === EIO) {
-          fs.writeSync(0, ' --');
-        } else if (e.errno === EBUSY) {
-          fs.writeSync(0, ' UU');
-        } else {
-          throw e; // Oops, don't know what to do!
-        }
-      }
-    }
+  if ((halfDegrees & 0x100) === 0) {
+    return halfDegrees / 2; // Temp +ve
   }
 
-  fs.writeSync(0, '\n');
+  return -((~halfDegrees & 0xff) / 2); // Temp -ve
 }
 
-scan(0x3, 0x77);
+(function () {
+  async.series([
+    function (cb) {
+      i2c1 = i2c.open(1, cb);
+    },
+    function (cb) {
+      // Enter one shot mode (this is a non volatile setting)
+      i2c1.writeByte(DS1621_ADDR, CMD_ACCESS_CONFIG, 0x01, cb);
+    },
+    function (cb) {
+      // Wait while non volatile memory busy
+      (function read() {
+        i2c1.readByte(DS1621_ADDR, CMD_ACCESS_CONFIG, function (err, config) {
+          if (err) return cb(err);
+          if (config & 0x10) return read();
+          cb(null);
+        });
+      }());
+    },
+    function (cb) {
+      // Start temperature conversion
+      i2c1.sendByte(DS1621_ADDR, CMD_START_CONVERT, cb);
+    },
+    function (cb) {
+      // Wait for temperature conversion to complete
+      (function read() {
+        i2c1.readByte(DS1621_ADDR, CMD_ACCESS_CONFIG, function (err, config) {
+          if (err) return cb(err);
+          if ((config & 0x80) === 0) return read();
+          cb(null);
+        });
+      }());
+    },
+    function (cb) {
+      // Display temperature
+      i2c1.readWord(DS1621_ADDR, CMD_READ_TEMP, function (err, rawTemp) {
+        if (err) return cb(err);
+        console.log('temp: ' + toCelsius(rawTemp));
+        cb(null);
+      });
+    },
+    function (cb) {
+      i2c1.close(cb);
+    }
+  ], function (err) {
+    if (err) throw err;
+  });
+}());
