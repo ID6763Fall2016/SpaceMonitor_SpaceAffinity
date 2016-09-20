@@ -40,7 +40,7 @@ var DS1621_ADDR = 0x29,
   var rawTemp;
  
   // Enter one shot mode (this is a non volatile setting) 
-  i2c1.writeByteSync(DS1621_ADDR, CMD_ACCESS_CONFIG, 0x01);
+  // i2c1.writeByteSync(DS1621_ADDR, CMD_ACCESS_CONFIG, 0x01);
  	var v = i2c1.readByteSync(DS1621_ADDR, CMD_ACCESS_CONFIG);
  	console.log(v);
  
