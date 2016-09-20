@@ -1059,7 +1059,7 @@ body {
   font-family: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
   font-size: 14px;
   line-height: 1.42857;
-  color: #eeeeee;
+  color: #ffffff;
   background-color: #000; }
 
 input,
@@ -4335,7 +4335,7 @@ a.badge:hover, a.badge:focus {
     margin-right: auto; }
   .thumbnail .caption {
     padding: 9px;
-    color: #eeeeee; }
+    color: #ffffff; }
 
 a.thumbnail:hover,
 a.thumbnail:focus,
@@ -6301,7 +6301,7 @@ p {
 
 .title {
   padding-bottom: 24px;
-  font-size: 5em;
+  font-size: 4em;
   text-transform: uppercase;
   border-bottom: 1px solid #777777; }
   @media screen and (max-width: 1200px) {
@@ -6310,9 +6310,9 @@ p {
       padding-bottom: 12px; } }
 
 .now {
-  margin-top: 32px; }
+  margin-top: 12px; }
   .now .time {
-    font-size: 4em;
+    font-size: 3em;
     font-weight: 100; }
     @media screen and (max-width: 1200px) {
       .now .time {
@@ -6337,7 +6337,7 @@ p {
       bottom: 2em; } }
 
 .data-section {
-  margin-top: 4em; }
+  margin-top: 2em; }
 
 .subheader {
   padding-bottom: 12px;
@@ -6354,19 +6354,20 @@ p {
   .stats-item .item-title {
     margin-bottom: 0;
     font-size: 1em;
-    color: #777777; }
+    color: #ccc;
+    font-weight: 400; }
     @media screen and (max-width: 1200px) {
       .stats-item .item-title {
         font-size: 0.6em;
         font-weight: 400; } }
   .stats-item .value {
-    font-size: 2.4em;
-    font-weight: 300; }
+    font-size: 2em;
+    font-weight: 100; }
     @media screen and (max-width: 1200px) {
       .stats-item .value {
         font-size: 1.6em; } }
   .stats-item .value-large {
-    font-size: 4.5em;
+    font-size: 3em;
     color: #64BC49; }
     @media screen and (max-width: 1200px) {
       .stats-item .value-large {
@@ -6375,15 +6376,22 @@ p {
 /*
  * Mirror
  */
+.flexbox {
+  display: flex; }
+
+.fullscreen-height {
+  height: 100vh; }
+
 .mirror {
   position: relative;
   height: 100vh; }
 
 .question {
-  position: absolute;
+  align-self: flex-end;
   width: 100%;
-  bottom: 3em;
+  padding-left: 2em;
   text-align: center;
+  padding-bottom: 1em;
   transition: all 0.3s ease-in-out; }
   .question.fadeout {
     opacity: 0;
@@ -6391,7 +6399,7 @@ p {
   .question span {
     font-size: 18px;
     font-weight: 300;
-    color: #777777; }
+    color: #cccccc; }
 
 .quote {
   position: absolute;

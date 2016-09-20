@@ -1,6 +1,8 @@
 // Sensors 
 var GPIO = require('onoff').Gpio,
-	motion_sensor = new GPIO(18, 'in', 'both');
+	motion_sensor = new GPIO(18, 'in', 'both'),
+	button1 = new GPIO(17, 'in', 'both'),
+	button2 = new GPIO(27, 'in', 'both');
 
 var express = require('express');
 var app = express();
@@ -61,9 +63,10 @@ io.on('connection', function(socket) {
 			console.log(result);
 			console.log("=========================");
 		});
-	}, 1000);
+	}, 200);
 
 	var sendTodayMood = setInterval(function() {
+		getHappyDay();
 		getTodayMood(1000, function(results) {
 			if (results) {
 				var totalEntries = results.length;
@@ -157,7 +160,9 @@ var insertMood = function(theDate, theMood, theDay)
 var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 setInterval(function(){
  var makeValue = Math.random() * 100;
- var motionValue = motion_sensor.readSync();
+ // var motionValue = motion_sensor.readSync();
+ var motionValue = Math.round(Math.random() );
+
  var getDate = new Date();
  var day = getDate.getDay();
  var getDay = days[day];
@@ -166,13 +171,36 @@ setInterval(function(){
  insertMotion(getDate,motionValue,getDay);
 },200);
 
-setInterval(function() {
-	var moodValue = Math.round(Math.random());
- 	var getDate = new Date();
+// setInterval(function() {
+// 	var moodValue = Math.round(Math.random());
+//  	var getDate = new Date();
+//  	var day = getDate.getDay();
+//  	var getDay = days[day];	
+// 	insertMood(getDate, moodValue,getDay);
+// 	// var isHappy = button1.readSync();
+// 	// var isUnhappy = button2.readSync();
+
+// }, 200);
+
+button1.watch(function() {
+	var getDate = new Date();
  	var day = getDate.getDay();
  	var getDay = days[day];	
-	insertMood(getDate, moodValue,getDay);
-}, 10000);
+	var moodValue = button1.readSync();
+	if (moodValue === 1) {
+		insertMood(getDate, 1, getDay);
+	}
+});
+
+button2.watch(function() {
+	var getDate = new Date();
+ 	var day = getDate.getDay();
+ 	var getDay = days[day];	
+	var moodValue = button2.readSync();
+	if (moodValue === 1) {
+		insertMood(getDate, 0, getDay);
+	}
+});
 
 var getLatestSamples = function(theCount,callback){
 
@@ -215,14 +243,11 @@ var getTodayMood = function(theCount, callback) {
 	});
 };
 
-var getHappyDay = function(theCount, callback) {
+var getHappyDay = function() {
 	var moodCollection = db.collection('mood_data');
-	moodCollection
+	var count = moodCollection
 	.find({
 		"mood" : 1
-	})
-	.limit(theCount)
-	.toArray(function(err,docList){
-		callback(docList);
 	});
+	console.log(count);
 }

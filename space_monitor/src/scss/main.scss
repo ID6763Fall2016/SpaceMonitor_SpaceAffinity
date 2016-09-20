@@ -50,9 +50,8 @@ p {
 .title {
 	padding-bottom: 24px;
 
-	font-size: 5em;
+	font-size: 4em;
 	text-transform: uppercase;
-
 	border-bottom: 1px solid $gray-light;
 
 	@media screen and (max-width: $laptop-width) {
@@ -62,10 +61,10 @@ p {
 }
 
 .now {
-	margin-top: 32px;
+	margin-top: 12px;
 
 	.time {
-		font-size: 4em;
+		font-size: 3em;
 		font-weight: 100;
 		@media screen and (max-width: $laptop-width) {
 			font-size: 2.5em;
@@ -96,7 +95,7 @@ p {
 }
 
 .data-section {
-	margin-top: 4em;
+	margin-top: 2em;
 }
 
 .subheader {
@@ -119,7 +118,8 @@ p {
 	.item-title {
 		margin-bottom: 0;
 		font-size: 1em;
-		color: $gray-light;
+		color: #ccc;
+		font-weight: 400;
 
 		@media screen and (max-width: $laptop-width) {
 			font-size: 0.6em;
@@ -127,15 +127,15 @@ p {
 		}
 	}
 	.value {
-		font-size: 2.4em;
-		font-weight: 300;
+		font-size: 2em;
+		font-weight: 100;
 
 		@media screen and (max-width: $laptop-width) {
 			font-size: 1.6em;
 		}
 	}
 	.value-large {
-		font-size: 4.5em;
+		font-size: 3em;
 		color: $mirror-green;
 		@media screen and (max-width: $laptop-width) {
 			font-size: 3.6em;
@@ -146,16 +146,22 @@ p {
 /*
  * Mirror
  */
+ .flexbox {
+ 	display: flex;
+ }
+ .fullscreen-height {
+ 	height: 100vh;
+ }
 .mirror {
 	position: relative;
 	height: 100vh;
 }
 .question {
-	position: absolute;
+	align-self: flex-end;
 	width: 100%;
-	bottom: 3em;
-
+	padding-left: 2em;
 	text-align: center;
+	padding-bottom: 1em;
 
 	transition: all 0.3s ease-in-out;
 
@@ -167,7 +173,7 @@ p {
 	span {
 		font-size: 18px;
 		font-weight: 300;
-		color: $gray-light;
+		color: #cccccc;
 	}
 }
 .quote {
