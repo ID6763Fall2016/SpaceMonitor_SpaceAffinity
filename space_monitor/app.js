@@ -187,6 +187,10 @@ button1.watch(function() {
  	var day = getDate.getDay();
  	var getDay = days[day];	
 	var moodValue = button1.readSync();
+	console.log("============ button 1 ==========");
+
+	console.log(moodValue);
+	console.log("============ ==========");
 	if (moodValue === 1) {
 		insertMood(getDate, 1, getDay);
 	}
