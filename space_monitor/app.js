@@ -160,8 +160,8 @@ var insertMood = function(theDate, theMood, theDay)
 var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 setInterval(function(){
  var makeValue = Math.random() * 100;
- // var motionValue = motion_sensor.readSync();
- var motionValue = Math.round(Math.random() );
+ var motionValue = motion_sensor.readSync();
+ // var motionValue = Math.round(Math.random() );
 
  var getDate = new Date();
  var day = getDate.getDay();
