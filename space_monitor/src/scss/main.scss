@@ -9,7 +9,11 @@ $dashboard-bg: #29282E;
 $mirror-blue: #5CB4E5;
 $mirror-green: #64BC49;
 
-$dashboard-width: 480px;
+$dashboard-max-width: 480px;
+
+$laptop-dashboard-max-width: 320px;
+
+$laptop-width: 1200px;
 
 * {
 	box-sizing: border-box;
@@ -30,12 +34,17 @@ p {
  */
 .dashboard {
 	position: relative;
-	max-width: $dashboard-width;
+	max-width: $dashboard-max-width;
 	height: 100vh;
 
 	padding: 3em;
 
 	background-color: $dashboard-bg;
+
+	@media screen and (max-width: $laptop-width) {
+		max-width: none;
+		padding: 2em;
+	}
 }
 
 .title {
@@ -45,6 +54,11 @@ p {
 	text-transform: uppercase;
 
 	border-bottom: 1px solid $gray-light;
+
+	@media screen and (max-width: $laptop-width) {
+		font-size: 3em;
+		padding-bottom: 12px;
+	}
 }
 
 .now {
@@ -53,11 +67,21 @@ p {
 	.time {
 		font-size: 4em;
 		font-weight: 100;
+		@media screen and (max-width: $laptop-width) {
+			font-size: 2.5em;
+		}
 	}
 
 	.date {
 		font-size: 1em;
 		font-weight: 300;
+		@media screen and (max-width: $laptop-width) {
+			font-size: 0.8em;
+		}
+	}
+
+	@media screen and (max-width: $laptop-width) {
+		margin-top: 16px;
 	}
 }
 
@@ -65,6 +89,10 @@ p {
 	position: absolute;
 	width: calc(100% - 6em);
 	bottom: 3em;
+	@media screen and (max-width: $laptop-width) {
+		width: calc(100% - 4em);
+		bottom: 2em;
+	}
 }
 
 .data-section {
@@ -80,6 +108,10 @@ p {
 	color: $mirror-blue;
 
 	border-bottom: 1px solid $mirror-blue;
+
+	@media screen and (max-width: $laptop-width) {
+		font-size: 0.8em;
+	}
 }
 
 .stats-item {
@@ -88,14 +120,26 @@ p {
 		margin-bottom: 0;
 		font-size: 1em;
 		color: $gray-light;
+
+		@media screen and (max-width: $laptop-width) {
+			font-size: 0.6em;
+			font-weight: 400;
+		}
 	}
 	.value {
 		font-size: 2.4em;
 		font-weight: 300;
+
+		@media screen and (max-width: $laptop-width) {
+			font-size: 1.6em;
+		}
 	}
 	.value-large {
 		font-size: 4.5em;
 		color: $mirror-green;
+		@media screen and (max-width: $laptop-width) {
+			font-size: 3.6em;
+		}
 	}
 }
 

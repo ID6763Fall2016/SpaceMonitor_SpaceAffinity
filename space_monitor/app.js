@@ -200,8 +200,8 @@ var getTodayMood = function(theCount, callback) {
 		"datetime" : {
 			// TODO 
 			// auto fetch today's date
-			'$gte': new Date("2016-09-18T00:00:00.000Z"),
-			'$lte': new Date("2016-09-20T07:00:00.000Z")
+			'$gte': new Date("2016-09-19T00:00:00.000Z"),
+			'$lte': new Date("2016-09-22T07:00:00.000Z")
 		}
 	})
 	.sort({"datetime":-1})

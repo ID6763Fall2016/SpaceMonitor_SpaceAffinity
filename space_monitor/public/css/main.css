@@ -6294,26 +6294,47 @@ p {
   height: 100vh;
   padding: 3em;
   background-color: #29282E; }
+  @media screen and (max-width: 1200px) {
+    .dashboard {
+      max-width: none;
+      padding: 2em; } }
 
 .title {
   padding-bottom: 24px;
   font-size: 5em;
   text-transform: uppercase;
   border-bottom: 1px solid #777777; }
+  @media screen and (max-width: 1200px) {
+    .title {
+      font-size: 3em;
+      padding-bottom: 12px; } }
 
 .now {
   margin-top: 32px; }
   .now .time {
     font-size: 4em;
     font-weight: 100; }
+    @media screen and (max-width: 1200px) {
+      .now .time {
+        font-size: 2.5em; } }
   .now .date {
     font-size: 1em;
     font-weight: 300; }
+    @media screen and (max-width: 1200px) {
+      .now .date {
+        font-size: 0.8em; } }
+  @media screen and (max-width: 1200px) {
+    .now {
+      margin-top: 16px; } }
 
 .data {
   position: absolute;
   width: calc(100% - 6em);
   bottom: 3em; }
+  @media screen and (max-width: 1200px) {
+    .data {
+      width: calc(100% - 4em);
+      bottom: 2em; } }
 
 .data-section {
   margin-top: 4em; }
@@ -6324,6 +6345,9 @@ p {
   text-transform: uppercase;
   color: #5CB4E5;
   border-bottom: 1px solid #5CB4E5; }
+  @media screen and (max-width: 1200px) {
+    .subheader {
+      font-size: 0.8em; } }
 
 .stats-item {
   margin-top: 0.4em; }
@@ -6331,12 +6355,22 @@ p {
     margin-bottom: 0;
     font-size: 1em;
     color: #777777; }
+    @media screen and (max-width: 1200px) {
+      .stats-item .item-title {
+        font-size: 0.6em;
+        font-weight: 400; } }
   .stats-item .value {
     font-size: 2.4em;
     font-weight: 300; }
+    @media screen and (max-width: 1200px) {
+      .stats-item .value {
+        font-size: 1.6em; } }
   .stats-item .value-large {
     font-size: 4.5em;
     color: #64BC49; }
+    @media screen and (max-width: 1200px) {
+      .stats-item .value-large {
+        font-size: 3.6em; } }
 
 /*
  * Mirror
