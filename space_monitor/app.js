@@ -63,7 +63,7 @@ io.on('connection', function(socket) {
 			console.log(result);
 			console.log("=========================");
 		});
-	}, 300);
+	}, 1000);
 
 
 	/*	emit: todayMood
@@ -103,7 +103,7 @@ io.on('connection', function(socket) {
 			}
 			
 		});
-	}, 300);
+	}, 1000);
 
 
 	/*	emit: happyDay
