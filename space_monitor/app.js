@@ -63,7 +63,7 @@ io.on('connection', function(socket) {
 			console.log(result);
 			console.log("=========================");
 		});
-	}, readDuration);
+	}, 1000);
 
 
 	/*	emit: todayMood
@@ -210,7 +210,7 @@ io.on('connection', function(socket) {
 		});
 		
 		
-	}, readDurationS);
+	}, 1000);
 
 
 	/*	emit: busyDay
@@ -318,7 +318,7 @@ io.on('connection', function(socket) {
 		});
 		
 		
-	}, readDurationS);
+	}, 1000);
 
 	socket.on('disconnect', function(){
 		console.log("user disconnected from socket");
@@ -370,7 +370,7 @@ setInterval(function(){
  var getDay = days[day];
 
  insertMotion(getDate,motionValue,getDay);
-},writeDuration);
+},1000);
 
 // setInterval(function() {
 // 	var moodValue = Math.round(Math.random());
@@ -404,18 +404,6 @@ button2.watch(function() {
 		insertMood(getDate, 0, getDay);
 	}
 });
-
-var getLatestSamples = function(theCount,callback){
-
-	var sampleCollection = db.collection('chartStuff');
-	 sampleCollection
-	 .find()
-	 .sort({"datetime":-1})
-	 .limit(theCount)
-	 .toArray(function(err,docList){
-	 callback(docList);
-	 });
-};
 
 var getLatestMotion = function(theCount, callback) {
 	var motionCollection = db.collection('motion_data');
