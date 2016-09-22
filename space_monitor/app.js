@@ -1,8 +1,8 @@
-// Sensors 
-// var GPIO = require('onoff').Gpio,
-// 	motion_sensor = new GPIO(18, 'in', 'both'),
-// 	button1 = new GPIO(17, 'in', 'both'),
-// 	button2 = new GPIO(27, 'in', 'both');
+Sensors 
+var GPIO = require('onoff').Gpio,
+	motion_sensor = new GPIO(18, 'in', 'both'),
+	button1 = new GPIO(17, 'in', 'both'),
+	button2 = new GPIO(27, 'in', 'both');
 
 var express = require('express');
 var app = express();
@@ -13,9 +13,9 @@ var path = require('path');
 var Engine = require('tingodb')(), assert = require('assert');
 var db = new Engine.Db(__dirname + '/db',{});
 
-var writeDuration = 3600000;
-var readDuration = 10000;
-var readDurationS = 10000;
+var writeDuration = 1000;
+var readDuration = 1000;
+var readDurationS = 1000;
 
 var days = ["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"];
 app.use(express.static(path.join(__dirname, 'public')));
@@ -363,8 +363,8 @@ var insertMood = function(theDate, theMood, theDay)
 
 setInterval(function(){
  var makeValue = Math.random() * 100;
- // var motionValue = motion_sensor.readSync();
- var motionValue = Math.round(Math.random() );
+ var motionValue = motion_sensor.readSync();
+ // var motionValue = Math.round(Math.random() );
 
  var getDate = new Date();
  var day = getDate.getDay();
@@ -373,38 +373,38 @@ setInterval(function(){
  insertMotion(getDate,motionValue,getDay);
 },writeDuration);
 
-setInterval(function() {
-	var moodValue = Math.round(Math.random());
- 	var getDate = new Date();
+// setInterval(function() {
+// 	var moodValue = Math.round(Math.random());
+//  	var getDate = new Date();
+//  	var day = getDate.getDay();
+//  	var getDay = days[day];	
+// 	insertMood(getDate, moodValue,getDay);
+
+// }, writeDuration);
+
+button1.watch(function() {
+	var getDate = new Date();
  	var day = getDate.getDay();
  	var getDay = days[day];	
-	insertMood(getDate, moodValue,getDay);
+	var moodValue = button1.readSync();
+	console.log("============ button 1 ==========");
 
-}, writeDuration);
+	console.log(moodValue);
+	console.log("============ ==========");
+	if (moodValue === 1) {
+		insertMood(getDate, 1, getDay);
+	}
+});
 
-// button1.watch(function() {
-// 	var getDate = new Date();
-//  	var day = getDate.getDay();
-//  	var getDay = days[day];	
-// 	var moodValue = button1.readSync();
-// 	console.log("============ button 1 ==========");
-
-// 	console.log(moodValue);
-// 	console.log("============ ==========");
-// 	if (moodValue === 1) {
-// 		insertMood(getDate, 1, getDay);
-// 	}
-// });
-
-// button2.watch(function() {
-// 	var getDate = new Date();
-//  	var day = getDate.getDay();
-//  	var getDay = days[day];	
-// 	var moodValue = button2.readSync();
-// 	if (moodValue === 1) {
-// 		insertMood(getDate, 0, getDay);
-// 	}
-// });
+button2.watch(function() {
+	var getDate = new Date();
+ 	var day = getDate.getDay();
+ 	var getDay = days[day];	
+	var moodValue = button2.readSync();
+	if (moodValue === 1) {
+		insertMood(getDate, 0, getDay);
+	}
+});
 
 var getLatestSamples = function(theCount,callback){
 
