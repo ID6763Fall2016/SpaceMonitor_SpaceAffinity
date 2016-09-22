@@ -210,7 +210,7 @@ io.on('connection', function(socket) {
 		});
 		
 		
-	}, 1000);
+	}, 10000);
 
 
 	/*	emit: busyDay
@@ -318,7 +318,7 @@ io.on('connection', function(socket) {
 		});
 		
 		
-	}, 1000);
+	}, 10000);
 
 	socket.on('disconnect', function(){
 		console.log("user disconnected from socket");
@@ -363,6 +363,7 @@ var insertMood = function(theDate, theMood, theDay)
 setInterval(function(){
  var makeValue = Math.random() * 100;
  var motionValue = motion_sensor.readSync();
+
  // var motionValue = Math.round(Math.random() );
 
  var getDate = new Date();
