@@ -1,4 +1,3 @@
-Sensors 
 var GPIO = require('onoff').Gpio,
 	motion_sensor = new GPIO(18, 'in', 'both'),
 	button1 = new GPIO(17, 'in', 'both'),
