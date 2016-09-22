@@ -63,7 +63,7 @@ io.on('connection', function(socket) {
 			console.log(result);
 			console.log("=========================");
 		});
-	}, 1000);
+	}, 300);
 
 
 	/*	emit: todayMood
@@ -103,7 +103,7 @@ io.on('connection', function(socket) {
 			}
 			
 		});
-	}, 1000);
+	}, 300);
 
 
 	/*	emit: happyDay
@@ -363,7 +363,7 @@ var insertMood = function(theDate, theMood, theDay)
 setInterval(function(){
  var makeValue = Math.random() * 100;
  var motionValue = motion_sensor.readSync();
-
+ console.log("Reading data from motion sensor: "+ motionValue);
  // var motionValue = Math.round(Math.random() );
 
  var getDate = new Date();
