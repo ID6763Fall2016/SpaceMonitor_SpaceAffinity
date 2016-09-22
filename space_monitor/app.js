@@ -13,7 +13,7 @@ var path = require('path');
 var Engine = require('tingodb')(), assert = require('assert');
 var db = new Engine.Db(__dirname + '/db',{});
 
-var writeDuration = 10000;
+var writeDuration = 3600000;
 var readDuration = 10000;
 var readDurationS = 10000;
 
@@ -436,8 +436,8 @@ var getTodayMood = function(theCount, callback) {
 		"datetime" : {
 			// TODO 
 			// auto fetch today's date
-			'$gte': new Date("2016-09-21T00:00:00.000Z"),
-			'$lte': new Date("2016-09-22T07:00:00.000Z")
+			'$gte': new Date("2016-09-21T20:00:00.000Z"),
+			'$lte': new Date("2016-09-22T20:00:00.000Z")
 		}
 	})
 	.sort({"datetime":-1})

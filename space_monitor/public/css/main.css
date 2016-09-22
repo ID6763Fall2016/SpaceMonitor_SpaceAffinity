@@ -6281,6 +6281,8 @@ html {
 
 body {
   width: 100%; }
+  body.desktop {
+    background-color: #fff; }
 
 p {
   margin: 0; }
@@ -6298,6 +6300,10 @@ p {
     .dashboard {
       max-width: none;
       padding: 2em; } }
+  .desktop .dashboard {
+    background-color: #fff;
+    max-width: 100%;
+    padding-top: 1.6em; }
 
 .title {
   padding-bottom: 24px;
@@ -6308,6 +6314,11 @@ p {
     .title {
       font-size: 3em;
       padding-bottom: 12px; } }
+  .desktop .title {
+    color: #333333;
+    font-size: 3em;
+    padding-bottom: 0;
+    border-bottom: 0; }
 
 .now {
   margin-top: 12px; }
@@ -6317,6 +6328,9 @@ p {
     @media screen and (max-width: 1200px) {
       .now .time {
         font-size: 2.5em; } }
+    .desktop .now .time {
+      font-size: 2em;
+      font-weight: 300; }
   .now .date {
     font-size: 1em;
     font-weight: 300; }
@@ -6326,6 +6340,8 @@ p {
   @media screen and (max-width: 1200px) {
     .now {
       margin-top: 16px; } }
+  .desktop .now {
+    color: #777777; }
 
 .data {
   position: absolute;
@@ -6335,6 +6351,11 @@ p {
     .data {
       width: calc(100% - 4em);
       bottom: 2em; } }
+  .desktop .data {
+    position: relative;
+    margin-top: 3em;
+    width: 100%;
+    bottom: 0; }
 
 .data-section {
   margin-top: 2em; }
@@ -6348,9 +6369,14 @@ p {
   @media screen and (max-width: 1200px) {
     .subheader {
       font-size: 0.8em; } }
+  .desktop .subheader {
+    color: #00A7F7;
+    border-bottom: 1px solid #ddd; }
 
 .stats-item {
   margin-top: 0.4em; }
+  .desktop .stats-item {
+    margin-top: 1em; }
   .stats-item .item-title {
     margin-bottom: 0;
     font-size: 1em;
@@ -6360,21 +6386,35 @@ p {
       .stats-item .item-title {
         font-size: 0.6em;
         font-weight: 400; } }
+    .desktop .stats-item .item-title {
+      color: #777777;
+      font-weight: 400;
+      text-transform: uppercase;
+      font-size: 0.8em;
+      margin-bottom: 8px; }
   .stats-item .value {
     font-size: 2em;
     font-weight: 100; }
     @media screen and (max-width: 1200px) {
       .stats-item .value {
         font-size: 1.6em; } }
+    .desktop .stats-item .value {
+      color: #333333;
+      font-weight: 300; }
   .stats-item .value-large {
     font-size: 3em;
     color: #64BC49; }
     @media screen and (max-width: 1200px) {
       .stats-item .value-large {
         font-size: 3.6em; } }
+    .desktop .stats-item .value-large {
+      font-size: 4em; }
 
 #chart {
   margin-top: 2em; }
+  .desktop #chart {
+    width: 100%;
+    max-height: 320px; }
 
 /*
  * Mirror
@@ -6417,3 +6457,11 @@ p {
   .quote.fadeout {
     opacity: 0;
     transform: scale(1.2); }
+
+#btn-toggle {
+  position: absolute;
+  right: 2em;
+  top: 2em;
+  color: #3D5980; }
+  #btn-toggle:hover, #btn-toggle:active, #btn-toggle:focus {
+    color: #4d71a3; }

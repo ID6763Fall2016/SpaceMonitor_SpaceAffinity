@@ -7,77 +7,70 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
 </head>
-<body>
+<body class="desktop">
 	<div class="main-container">
-		<div class="row">
-			
-			<div class="mirror col-md-9">
-				<div class="row">
-					<div class="col-md-4 flexbox fullscreen-height">
-						<h1 class="question">How do you feel today?<br><span>Click the button describes your mood the best.</span><br><span class="glyphicon glyphicon-chevron-down"></span></h1>
-					</div>
-				</div>
-				<p class="quote">"It isn’t what you have, or who you are, or where you are, or what you are doing that makes you happy or unhappy. It is what you think about."</p>
-				
-			</div>
-			<aside class="dashboard col-md-3">
+		<div class="dashboard">
 				<h1 class="title">Clough Commons</h1>
 				<div class="now">
 					<p id="time" class="time">11:58</p>
 					<p id="date" class="date">Thuesday, Sep 15, 2016</p>
 				</div>
 				<div class="data">
-					<div class="today data-section">
-						<h2 class="subheader">
-							Today
-						</h2>
-						<div class="row">
-							<div class="stats-item col-md-12 col-xs-12">
-								<h6 class="item-title">% of people feel happy</h6>
-								<p id="mood-value" class="value value-large">80%</p>
+					<div class="row">
+						<div class="col-md-6">
+							<div class="today data-section">
+								<h2 class="subheader">
+									Today
+								</h2>
+								<div class="row">
+									<div class="stats-item col-md-12 col-xs-12">
+										<h6 class="item-title">% of people feel happy</h6>
+										<p id="mood-value" class="value value-large colored">80%</p>
+									</div>
+									
+								</div>
+								<div class="row">
+									<div class="stats-item col-md-6 col-xs-12">
+										<h6 class="item-title">Total people visited</h6>
+										<p id="total-mood-entry" class="value">206</p>
+									</div>
+									<div class="stats-item col-md-6 col-xs-12">
+										<h6 class="item-title">This place is</h6>
+										<p id="motion-value" class="value">Busy</p>
+									</div>
+								</div>
 							</div>
-							
 						</div>
-						<div class="row">
-							<div class="stats-item col-md-6 col-xs-12">
-								<h6 class="item-title">Total people visited</h6>
-								<p id="total-mood-entry" class="value">206</p>
-							</div>
-							<div class="stats-item col-md-6 col-xs-12">
-								<h6 class="item-title">This place is</h6>
-								<p id="motion-value" class="value">Busy</p>
+						<div class="col-md-6">
+							<div class="weekly data-section">
+								<h2 class="subheader">
+									Weekly
+								</h2>
+								<div class="row">
+									<div class="stats-item col-md-6 col-xs-12">
+										<h6 class="item-title">Most people feel happy on</h6>
+										<p id="happy-day" class="value">Friday</p>
+									</div>
+									<div class="stats-item col-md-6 col-xs-12">
+										<h6 class="item-title">Most people are busy on</h6>
+										<p id="busy-day" class="value">Monday</p>
+									</div>
+								</div>
+								<div class="row">
+									<div id="chart" class="stats-item col-md-6 col-xs-12">
+										
+										<canvas id="something"></canvas>
+									</div>
+								</div>
 							</div>
 						</div>
 					</div>
-					<div class="weekly data-section">
-						<h2 class="subheader">
-							Weekly
-						</h2>
-						<div class="row">
-							<div class="stats-item col-md-6 col-xs-12">
-								<h6 class="item-title">Most people feel happy on</h6>
-								<p id="happy-day" class="value">Friday</p>
-							</div>
-							<div class="stats-item col-md-6 col-xs-12">
-								<h6 class="item-title">Most people are busy on</h6>
-								<p id="busy-day" class="value">Monday</p>
-							</div>
-						</div>
-						<div class="row">
-							<div id="chart" class="stats-item col-md-12 col-xs-12">
-								
-								<canvas id="something" height="450" width="600"></canvas>
-							</div>
-						</div>
-					</div>
+					
+					
 				</div>
-			</aside>
-		</div>
-
-		<a id="btn-toggle" class="btn" href="desktop.html">Go to Desktop View</a>
+			</div>
+			<a id="btn-toggle" class="btn" href="index.html">Go to Monitor View</a>
 	</div>
-	
-
 	<script>
 
 	window.onload = function(){
@@ -167,28 +160,7 @@
 	var updateBusyDay = function() {
 		$("#busy-day").text(busy_day);
 	}
-
-	// Quote update
-	socket.on('newEntry', function(newMood) {
-		console.log(newMood);
-		showQuote(newMood);
-	});
-	var showQuote = function(mood) {
-		if (mood === 1) {
-			$(".quote").text("\"It isn’t what you have, or who you are, or where you are, or what you are doing that makes you happy or unhappy. It is what you think about.\"");
-			
-		} else {
-			$(".quote").text("\"After every storm the sun will smile; for every problem there is a solution, and the soul's indefeasible duty is to be of good cheer.\"");
-		}
-		$('.question').addClass("fadeout");
-		$(".quote").removeClass("fadeout");
-		setTimeout(hideQuote, 5000);
-	}
-
-	var hideQuote = function() {
-		$('.question').removeClass("fadeout");
-		$(".quote").addClass("fadeout");
-	}
+	
 	var happryDayDatasets = [0,0,0,0,0,0,0];
 	var busyDayDatasets = [0,0,0,0,0,0,0];
 
@@ -204,9 +176,9 @@
         datasets: [{
             type: 'bar',
             label: 'Happiness',
-            backgroundColor: "rgba(113,179,124,0.6)",
+            backgroundColor: "rgba(67,192,229,0.6)",
             data: happryDayDatasets,
-            borderColor: '#71B37C',
+            borderColor: '#43C0E5',
             borderWidth: 1
         }, {
             type: 'line',

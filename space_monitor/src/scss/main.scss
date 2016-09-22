@@ -24,6 +24,9 @@ html {
 }
 body {
 	width: 100%;
+	&.desktop {
+		background-color: #fff;
+	}
 }
 p {
 	margin: 0;
@@ -45,6 +48,12 @@ p {
 		max-width: none;
 		padding: 2em;
 	}
+
+	.desktop & {
+		background-color: #fff;
+		max-width: 100%;
+		padding-top: 1.6em;
+	}
 }
 
 .title {
@@ -58,6 +67,14 @@ p {
 		font-size: 3em;
 		padding-bottom: 12px;
 	}
+
+	.desktop & {
+		color: $gray-dark;
+		font-size: 3em;
+		padding-bottom: 0;
+		border-bottom: 0;
+	}
+
 }
 
 .now {
@@ -68,6 +85,11 @@ p {
 		font-weight: 100;
 		@media screen and (max-width: $laptop-width) {
 			font-size: 2.5em;
+		}
+		.desktop & {
+			font-size: 2em;
+			font-weight: 300;
+
 		}
 	}
 
@@ -82,6 +104,10 @@ p {
 	@media screen and (max-width: $laptop-width) {
 		margin-top: 16px;
 	}
+
+	.desktop & {
+		color: $gray-light;
+	}
 }
 
 .data {
@@ -91,6 +117,12 @@ p {
 	@media screen and (max-width: $laptop-width) {
 		width: calc(100% - 4em);
 		bottom: 2em;
+	}
+	.desktop & {
+		position: relative;
+		margin-top: 3em;
+		width: 100%;
+		bottom: 0;
 	}
 }
 
@@ -111,10 +143,19 @@ p {
 	@media screen and (max-width: $laptop-width) {
 		font-size: 0.8em;
 	}
+
+	.desktop & {
+		color: #00A7F7;
+		border-bottom: 1px solid #ddd;
+	}
 }
 
 .stats-item {
 	margin-top: 0.4em;
+
+	.desktop & {
+		margin-top: 1em;
+	}
 	.item-title {
 		margin-bottom: 0;
 		font-size: 1em;
@@ -125,6 +166,14 @@ p {
 			font-size: 0.6em;
 			font-weight: 400;
 		}
+
+		.desktop & {
+			color: $gray-light;
+			font-weight: 400;
+			text-transform: uppercase;
+			font-size: 0.8em;
+			margin-bottom: 8px;
+		}
 	}
 	.value {
 		font-size: 2em;
@@ -133,6 +182,10 @@ p {
 		@media screen and (max-width: $laptop-width) {
 			font-size: 1.6em;
 		}
+		.desktop & {
+			color: $gray-dark;
+			font-weight: 300;
+		}
 	}
 	.value-large {
 		font-size: 3em;
@@ -140,11 +193,27 @@ p {
 		@media screen and (max-width: $laptop-width) {
 			font-size: 3.6em;
 		}
+		.desktop & {
+			font-size: 4em;
+
+			&.colored {
+				// color: $g;
+			}
+		}
 	}
 }
 
 #chart {
 	margin-top: 2em;
+
+	.desktop & {
+		width: 100%;
+		max-height: 320px;
+		canvas {
+			// max-height: 240px;
+			// width: 100%;
+		}
+	}
 }
 
 /*
@@ -196,5 +265,17 @@ p {
 	&.fadeout {
 		opacity: 0;
 		transform: scale(1.2);
+	}
+}
+
+#btn-toggle {
+	position: absolute;
+	right: 2em;
+	top: 2em; 
+
+	color: #3D5980;
+
+	&:hover, &:active, &:focus {
+		color: lighten(#3D5980, 10%);
 	}
 }
