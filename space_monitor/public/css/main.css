@@ -6373,6 +6373,9 @@ p {
       .stats-item .value-large {
         font-size: 3.6em; } }
 
+#chart {
+  margin-top: 2em; }
+
 /*
  * Mirror
  */

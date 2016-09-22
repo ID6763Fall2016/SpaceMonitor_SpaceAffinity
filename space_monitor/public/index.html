@@ -4,7 +4,7 @@
 	<title>Moody Mirror</title>
 	<link rel="stylesheet" type="text/css" href="/css/main.css">
 	<link href="https://fonts.googleapis.com/css?family=Roboto:100,300,400,500" rel="stylesheet">
-	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/1.0.2/Chart.js"></script>
+	<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.2.2/Chart.js"></script>
 	<script src="/socket.io/socket.io.js"></script>
 </head>
 <body>
@@ -56,16 +56,16 @@
 						<div class="row">
 							<div class="stats-item col-md-6 col-xs-12">
 								<h6 class="item-title">Most people feel happy on</h6>
-								<p class="value">Friday</p>
+								<p id="happy-day" class="value">Friday</p>
 							</div>
 							<div class="stats-item col-md-6 col-xs-12">
 								<h6 class="item-title">Most people are busy on</h6>
-								<p class="value">Monday</p>
+								<p id="busy-day" class="value">Monday</p>
 							</div>
 						</div>
 						<div class="row">
-							<div class="stats-item col-md-12 col-xs-12">
-								<h6 class="item-title">Happiness over weekdays</h6>
+							<div id="chart" class="stats-item col-md-12 col-xs-12">
+								
 								<canvas id="something" height="450" width="600"></canvas>
 							</div>
 						</div>
@@ -84,33 +84,6 @@
 	}
 
 	var socket = io();
-
-	var lineChartData = {
-	labels: ["M", "T", "W", "T", "F"],
-	// labels: Array(100).fill(0),
-	datasets: [
-	{
-	label: "My First dataset",
-	fillColor: "rgba(220,220,220,0.2)",
-	strokeColor: "rgba(220,220,220,1)",
-	pointColor: "rgba(220,220,220,1)",
-	pointStrokeColor: "#fff",
-	pointHighlightFill: "#fff",
-	pointHighlightStroke: "rgba(220,220,220,1)",
-	//data: [65, 59, 80, 81, 56, 55, 40, 50, 40, 30]
-	// data: Array(100).fill(0)
-	}
-	]
-	}
-
-	socket.on('latestSamples', function(incomingData) {
-		console.log(incomingData);
-		socket.emit('messageFromClientToServer', "received: "+incomingData);
-
-		lineChartData.datasets[0].data = incomingData;
-		//window.myLineChart.update();
-		initLineChart();
-	});
 
 	// Clock
 	function startTime() {
@@ -163,6 +136,35 @@
 		$("#total-mood-entry").text(totalMoodEntry);
 	}
 
+	// Happy Day
+	var happy_day = "...";
+	socket.on('happyDay', function(happyDayData) {
+		console.log("happy day", happyDayData[0]);
+		console.log("happy data", happyDayData[1]);
+		happy_day = happyDayData[0];
+		chartData.datasets[0].data = happyDayData[1];
+		console.log("happy data", chartData.datasets[0].data);
+		updateHappyDay();
+		initLineChart();
+	});
+
+	var updateHappyDay = function() {
+		$("#happy-day").text(happy_day);
+	}
+
+	// Busy Day
+	var busy_day = "...";
+	socket.on('busyDay', function(busyDayData) {
+		console.log("busy day", busyDayData[0]);
+		console.log("busy data", busyDayData[1]);
+		busy_day = busyDayData[0];
+		chartData.datasets[1].data = busyDayData[1];
+		updateBusyDay();
+	});
+
+	var updateBusyDay = function() {
+		$("#busy-day").text(busy_day);
+	}
 
 	// Quote update
 	socket.on('newEntry', function(newMood) {
@@ -185,17 +187,95 @@
 		$('.question').removeClass("fadeout");
 		$(".quote").addClass("fadeout");
 	}
+	var happryDayDatasets = [0,0,0,0,0,0,0];
+	var busyDayDatasets = [0,0,0,0,0,0,0];
+
+	var randomScalingFactor = function() {
+        return (Math.random() > 0.5 ? 1.0 : -1.0) * Math.round(Math.random() * 100);
+    };
+    var randomColorFactor = function() {
+        return Math.round(Math.random() * 255);
+    };
+
+	var chartData = {
+        labels: ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'],
+        datasets: [{
+            type: 'bar',
+            label: 'Happiness',
+            backgroundColor: "rgba(113,179,124,0.6)",
+            data: happryDayDatasets,
+            borderColor: '#71B37C',
+            borderWidth: 1
+        }, {
+            type: 'line',
+            label: 'Busy',
+            backgroundColor: "rgba(236,147,47,0.5)",
+            data: busyDayDatasets,
+            borderColor: '#EC932F',
+            borderWidth: 1
+        }]
+    };
+	
 	var initLineChart = function() {
 
-	var options = {
-	animation : true,
-	responsive : true
-	};
+		var options = {
+		responsive : true
+		};
 
-	var canvas = document.getElementById("something");
-	var ctx = canvas.getContext("2d");
-	window.myLineChart = new Chart(ctx).Line(lineChartData, options );
-	}
+		var canvas = document.getElementById("something");
+		var ctx = canvas.getContext("2d");
+		window.myMixedChart = new Chart(ctx, {
+			type: 'bar',
+			data: chartData,
+			options: {
+                responsive: true,
+                tooltips: {
+                  mode: 'label'
+              },
+              elements: {
+                line: {
+                    fill: false
+                }
+            },
+              scales: {
+                xAxes: [{
+                    display: true,
+                    gridLines: {
+                        display: false
+                    },
+                    labels: {
+                        show: true,
+                    }
+                }],
+                yAxes: [{
+                    type: "linear",
+                    display: true,
+                    position: "left",
+                    id: "y-axis-1",
+                    gridLines:{
+                        display: false
+                    },
+                    labels: {
+                        show:true,
+                        
+                    }
+                }, {
+                    type: "linear",
+                    display: false,
+                    position: "right",
+                    id: "y-axis-2",
+                    gridLines:{
+                        display: false
+                    },
+                    labels: {
+                        show:true,
+                        
+                    }
+                }]
+            }
+            }
+		});
+	};
 	</script>
 	 <!-- jQuery (necessary for Bootstrap's JavaScript plugins) -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.12.4/jquery.min.js"></script>
