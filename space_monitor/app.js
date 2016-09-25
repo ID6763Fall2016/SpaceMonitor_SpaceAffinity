@@ -425,7 +425,7 @@ var getTodayMood = function(theCount, callback) {
 			// TODO 
 			// auto fetch today's date
 			'$gte': new Date("2016-09-21T20:00:00.000Z"),
-			'$lte': new Date("2016-09-22T20:00:00.000Z")
+			'$lte': new Date("2016-09-25T20:00:00.000Z")
 		}
 	})
 	.sort({"datetime":-1})
